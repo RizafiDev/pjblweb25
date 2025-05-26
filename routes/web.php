@@ -56,7 +56,12 @@ Route::put('/jurusan/{id}', [JurusanController::class, 'update'])->name('jurusan
 Route::delete('/jurusan/{id}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
 
 // user management
+
+Route::middleware(['role:admin'])->group(function () {
 Route::resource('users', UserController::class)->except(['create', 'show', 'edit']);
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+});
+
 
 
 require __DIR__ . '/auth.php';
