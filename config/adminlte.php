@@ -336,6 +336,11 @@ return [
 
         ['header' => 'account_settings'],
         [
+            'text' => 'User Management',
+            'url' => '/users    ',
+            'icon' => 'fas fa-users',
+        ],
+        [
             'text' => 'Profile',
             'url' => '/profile/edit',
             'icon' => 'fas fa-fw fa-user',

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgamaController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 
 
@@ -53,6 +54,9 @@ Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index
 Route::post('/jurusan', [JurusanController::class, 'store'])->name('jurusan.store');
 Route::put('/jurusan/{id}', [JurusanController::class, 'update'])->name('jurusan.update');
 Route::delete('/jurusan/{id}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
+
+// user management
+Route::resource('users', UserController::class)->except(['create', 'show', 'edit']);
 
 
 require __DIR__ . '/auth.php';
