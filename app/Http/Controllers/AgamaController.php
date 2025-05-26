@@ -13,20 +13,34 @@ class AgamaController extends Controller
         return view('agama.index', compact('agamas'));
     }
 
-    public function create()
-    {
-        return view('agama.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'kode_agama' => 'required|string|unique:agamas,kode_agama',
+            'nama_agama' => 'required|string|max:255|unique:agamas',
         ]);
 
         Agama::create($request->all());
 
         return redirect()->route('agama.index')->with('success', 'Data agama berhasil ditambahkan.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_agama' => 'required|string|max:255|unique:agamas,nama_agama,'.$id,
+        ]);
+
+        $agama = Agama::findOrFail($id);
+        $agama->update($request->all());
+
+        return redirect()->route('agama.index')->with('success', 'Data agama berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $agama = Agama::findOrFail($id);
+        $agama->delete();
+
+        return redirect()->route('agama.index')->with('success', 'Data agama berhasil dihapus.');
     }
 }

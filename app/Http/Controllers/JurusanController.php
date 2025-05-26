@@ -13,20 +13,34 @@ class JurusanController extends Controller
         return view('jurusan.index', compact('jurusans'));
     }
 
-    public function create()
-    {
-        return view('jurusan.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'kode_jurusan' => 'required|string|unique:jurusans,kode_jurusan',
+            'nama_jurusan' => 'required|string|max:255|unique:jurusans',
         ]);
 
         Jurusan::create($request->all());
 
         return redirect()->route('jurusan.index')->with('success', 'Data jurusan berhasil ditambahkan.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_jurusan' => 'required|string|max:255|unique:jurusans,nama_jurusan,'.$id,
+        ]);
+
+        $jurusan = Jurusan::findOrFail($id);
+        $jurusan->update($request->all());
+
+        return redirect()->route('jurusan.index')->with('success', 'Data jurusan berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $jurusan = Jurusan::findOrFail($id);
+        $jurusan->delete();
+
+        return redirect()->route('jurusan.index')->with('success', 'Data jurusan berhasil dihapus.');
     }
 }

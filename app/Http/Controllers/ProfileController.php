@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,21 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    public function updatePassword(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'min:8', 'confirmed'],
+        ]);
+
+        $user = $request->user();
+
+        // Mengupdate password pengguna
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'password-updated');
     }
 }

@@ -56,4 +56,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+        // Add GET route for logout
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout.get');
 });
