@@ -63,9 +63,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo' => '<b>SMKN 6</b> Surakarta',
+    'logo_img' => '/logo/smkn6solo.svg',
+    'logo_img_class' => 'brand-image ',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => '/logo/smkn6solo.svg',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => false,
         'mode' => 'cwrapper', // 'fullscreen' or 'cwrapper'
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => '/logo/smkn6solo.svg',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -215,9 +215,9 @@ return [
     */
 
     'sidebar_mini' => 'lg',
-    'sidebar_collapse' => false,
+    'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => false,
-    'sidebar_collapse_remember' => false,
+    'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',
@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -299,61 +299,60 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        [
-            'text' => 'Dashboard',
-            'url' => '/',
-            'icon' => 'fas fa-home',
+    [
+        'text' => 'Dashboard',
+        'url' => '/',
+        'icon' => 'fas fa-home',
+    ],
+    [
+        'text' => 'Data Master',
+        'icon' => 'fas fa-database',
+        'submenu' => [
+            [
+                'text' => 'Data Siswa',
+                'url' => 'siswa',
+                'icon' => 'fas fa-user-graduate',
+            ],
+            [
+                'text' => 'Data Agama',
+                'url' => 'agama',
+                'icon' => 'fas fa-pray',
+            ],
+            [
+                'text' => 'Data Jurusan',
+                'url' => 'jurusan',
+                'icon' => 'fas fa-book',
+            ],
         ],
-        [
-            'header' => 'DATA MASTER',
-        ],
-        [
-            'text' => 'Data Siswa',
-            'url' => 'siswa',
-            'icon' => 'fas fa-user-graduate',
-        ],
-        [
-            'text' => 'Data Agama',
-            'url' => 'agama',
-            'icon' => 'fas fa-pray',
-        ],
-        [
-            'text' => 'Data Jurusan',
-            'url' => 'jurusan',
-            'icon' => 'fas fa-book',
-        ],
-        [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-
-
-        ['header' => 'account_settings'],
-        [
-            'text' => 'User Management',
-            'url' => '/users',
-            'icon' => 'fas fa-users',
-        ],
-        [
-            'text' => 'Profile',
-            'url' => '/profile/edit',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-        'text' => 'Logout',
-        'url' => 'logout',
-        'icon' => 'fas fa-fw fa-sign-out-alt',
-        'method' => 'post', // Add this line
-        'logout' => true,
     ],
 
+    [
+        'text' => 'Account Settings',
+        'icon' => 'fas fa-cog',
+        'submenu' => [
+            [
+                'text' => 'User Management',
+                'url' => '/users',
+                'icon' => 'fas fa-users',
+            ],
+            [
+                'text' => 'Profile',
+                'url' => '/profile/edit',
+                'icon' => 'fas fa-fw fa-user',
+            ],
+            [
+                'text' => 'Logout',
+                'url' => 'logout',
+                'icon' => 'fas fa-fw fa-sign-out-alt',
+                'method' => 'post',
+                'logout' => true,
+            ],
+        ],
     ],
+],
+
+
+    
 
     /*
     |--------------------------------------------------------------------------

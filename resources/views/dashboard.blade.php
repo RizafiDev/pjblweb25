@@ -88,6 +88,7 @@
         const labels = @json($siswaPerTahun->pluck('tahun'));
         const dataLaki = @json($siswaPerTahun->pluck('laki_laki'));
         const dataPerempuan = @json($siswaPerTahun->pluck('perempuan'));
+        const dataTotal = @json($siswaPerTahun->pluck('total'));
 
         function renderChart(canvasId, type) {
             const ctx = document.getElementById(canvasId).getContext('2d');
@@ -111,6 +112,15 @@
                             backgroundColor: type === 'bar' ? 'rgba(220, 53, 69, 0.5)' : 'transparent',
                             borderColor: 'rgba(220, 53, 69, 1)',
                             fill: true,
+                            tension: 0.4,
+                        },
+                        {
+                            label: 'Total',
+                            data: dataTotal,
+                            backgroundColor: type === 'bar' ? 'rgba(40, 167, 69, 0.5)' : 'transparent',
+                            borderColor: 'rgba(40, 167, 69, 1)',
+                            fill: false,
+                            borderDash: [5, 5],
                             tension: 0.4,
                         }
                     ]

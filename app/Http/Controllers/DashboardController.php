@@ -21,7 +21,8 @@ class DashboardController extends Controller
         $siswaPerTahun = Siswa::select(
             DB::raw("YEAR(created_at) as tahun"),
             DB::raw("SUM(CASE WHEN jenis_kelamin = 'L' THEN 1 ELSE 0 END) as laki_laki"),
-            DB::raw("SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as perempuan")
+            DB::raw("SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as perempuan"),
+            DB::raw("COUNT(*) as total") // Tambahkan baris ini
         )
         ->groupBy(DB::raw("YEAR(created_at)"))
         ->orderBy('tahun')

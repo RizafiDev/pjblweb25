@@ -2,9 +2,10 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" class="py-4" action="{{ route('login') }}">
         @csrf
-
+        <h1 class="text-2xl font-bold">Welcome Back!</h1>
+        <p class="text-gray-600 mb-4">Please sign in to access your account</p>
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
