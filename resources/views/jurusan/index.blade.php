@@ -44,19 +44,23 @@
     </div>
 @endif
 
+@role('admin')
 <!-- Create Button with Modal Trigger -->
 <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createModal">
     <i class="fas fa-plus"></i> Tambah Jurusan
 </button>
+@endrole
 
 <div class="card">
     <div class="card-body">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Kode Jurusan</th>
+                    <th width="150px" >Kode Jurusan</th>
                     <th>Nama Jurusan</th>
+                    @role('admin')
                     <th width="120px">Aksi</th>
+                    @endrole
                 </tr>
             </thead>
             <tbody>
@@ -64,6 +68,7 @@
                     <tr>
                         <td>{{ $jurusan->id }}</td>
                         <td>{{ $jurusan->nama_jurusan }}</td>
+                        @role('admin')
                         <td>
                             <!-- Edit Button with Modal Trigger -->
                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" 
@@ -79,10 +84,11 @@
                                         data-id="{{ $jurusan->id }}" 
                                         data-name="{{ $jurusan->nama_jurusan }}" 
                                         title="Hapus">
-                                    <i class="fas fa-trash"></i>
+                                    <i class="fas fa-trash text-white"></i>
                                 </button>
                             </form>
                         </td>
+                        @endrole
                     </tr>
 
                     <!-- Edit Modal untuk setiap jurusan -->

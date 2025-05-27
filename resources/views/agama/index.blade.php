@@ -12,17 +12,21 @@
 @stop
 
 @section('content')
+@role('admin')
 <!-- Create Button with Modal Trigger -->
 <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createModal">
     Tambah Agama
 </button>
+@endrole
 
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Kode Agama</th>
             <th>Nama</th>
-            <th>Aksi</th>
+            @role('admin')
+            <th width="120px">Aksi</th>
+            @endrole
         </tr>
     </thead>
     <tbody>
@@ -30,6 +34,7 @@
             <tr>
                 <td>{{ $agama->id }}</td>
                 <td>{{ $agama->nama_agama }}</td>
+                @role('admin')
                 <td>
                     <!-- Edit Button with Modal Trigger -->
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
@@ -76,6 +81,7 @@
                         </div>
                     </div>
                 </td>
+                @endrole
             </tr>
         @endforeach
     </tbody>

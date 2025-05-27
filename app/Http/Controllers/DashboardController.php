@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\Jurusan;
 use App\Models\Agama;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -14,6 +15,7 @@ class DashboardController extends Controller
         $totalSiswa = Siswa::count();
         $totalJurusan = Jurusan::count();
         $totalAgama = Agama::count();
+        $totalUser = User::count();
 
         // Analytics: jumlah siswa per tahun dan jenis kelamin
         $siswaPerTahun = Siswa::select(
@@ -25,6 +27,6 @@ class DashboardController extends Controller
         ->orderBy('tahun')
         ->get();
 
-        return view('dashboard', compact('totalSiswa', 'totalJurusan', 'totalAgama', 'siswaPerTahun'));
+        return view('dashboard', compact('totalSiswa', 'totalJurusan', 'totalAgama', 'siswaPerTahun', 'totalUser'));
     }
 }

@@ -58,8 +58,8 @@ Route::delete('/jurusan/{id}', [JurusanController::class, 'destroy'])->name('jur
 // user management
 
 Route::middleware(['role:admin'])->group(function () {
-Route::resource('users', UserController::class)->except(['create', 'show', 'edit']);
-Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::resource('users', UserController::class)->except(['create', 'show', 'edit']);
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
 

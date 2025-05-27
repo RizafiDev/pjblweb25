@@ -110,8 +110,8 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
-        'mode' => 'fullscreen',
+        'enabled' => false,
+        'mode' => 'cwrapper', // 'fullscreen' or 'cwrapper'
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'AdminLTE Preloader Image',
@@ -154,7 +154,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => 1,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -337,7 +337,7 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'User Management',
-            'url' => '/users    ',
+            'url' => '/users',
             'icon' => 'fas fa-users',
         ],
         [
