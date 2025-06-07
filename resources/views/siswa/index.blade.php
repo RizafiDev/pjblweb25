@@ -158,27 +158,28 @@
                             <div class="form-group">
                                 <label>NIS</label>
                                 <input type="text" name="nis" class="form-control" maxlength="20" 
-                                       placeholder="Masukkan NIS" required>
+                                       placeholder="Masukkan NIS" value="{{ old('nis') }}" required>
                             </div>
 
                             <div class="form-group">
                                 <label>NISN</label>
                                 <input type="text" name="nisn" class="form-control" maxlength="20"
-                                       placeholder="Masukkan NISN" required>
+                                       placeholder="Masukkan NISN" value="{{ old('nisn') }}" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Nama Lengkap</label>
-                                <input type="text" name="nama" class="form-control" maxlength="100" required>
+                                <input type="text" name="nama" class="form-control" maxlength="100" 
+                                       value="{{ old('nama') }}" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Kelas</label>
                                 <select name="kelas" class="form-control" required>
                                     <option value="">-- Pilih Kelas --</option>
-                                    <option value="X">X</option>
-                                    <option value="XI">XI</option>
-                                    <option value="XII">XII</option>
+                                    <option value="X" {{ old('kelas') == 'X' ? 'selected' : '' }}>X</option>
+                                    <option value="XI" {{ old('kelas') == 'XI' ? 'selected' : '' }}>XI</option>
+                                    <option value="XII" {{ old('kelas') == 'XII' ? 'selected' : '' }}>XII</option>
                                 </select>
                             </div>
 
@@ -187,7 +188,9 @@
                                 <select name="jurusan_id" class="form-control" required>
                                     <option value="">-- Pilih Jurusan --</option>
                                     @foreach($jurusans as $jurusan)
-                                        <option value="{{ $jurusan->id }}">{{ $jurusan->nama_jurusan }}</option>
+                                        <option value="{{ $jurusan->id }}" {{ old('jurusan_id') == $jurusan->id ? 'selected' : '' }}>
+                                            {{ $jurusan->nama_jurusan }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -198,7 +201,9 @@
                                 <select name="agama_id" class="form-control" required>
                                     <option value="">-- Pilih Agama --</option>
                                     @foreach($agamas as $agama)
-                                        <option value="{{ $agama->id }}">{{ $agama->nama_agama }}</option>
+                                        <option value="{{ $agama->id }}" {{ old('agama_id') == $agama->id ? 'selected' : '' }}>
+                                            {{ $agama->nama_agama }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -207,24 +212,26 @@
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control" required>
                                     <option value="">-- Pilih Jenis Kelamin --</option>
-                                    <option value="l">Laki-laki</option>
-                                    <option value="p">Perempuan</option>
+                                    <option value="l" {{ old('jenis_kelamin') == 'l' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="p" {{ old('jenis_kelamin') == 'p' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label>Tanggal Lahir</label>
-                                <input type="date" name="tanggal_lahir" class="form-control" required>
+                                <input type="date" name="tanggal_lahir" class="form-control" 
+                                       value="{{ old('tanggal_lahir') }}" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Alamat</label>
-                                <textarea name="alamat" class="form-control" rows="2" required></textarea>
+                                <textarea name="alamat" class="form-control" rows="2" required>{{ old('alamat') }}</textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>No Telepon</label>
-                                <input type="text" name="no_telepon" class="form-control" maxlength="20" required>
+                                <input type="text" name="no_telepon" class="form-control" maxlength="20" 
+                                       value="{{ old('no_telepon') }}" required>
                             </div>
                         </div>
                     </div>
@@ -245,10 +252,6 @@
     $(document).ready(function () {
         // Initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
-
-        // Hapus event realtime search/filter
-        // $('#search').on('input', performSearch);
-        // $('#kelas_filter, #jurusan_filter, #agama_filter, #gender_filter').on('change', performSearch);
 
         // Per page change tetap submit form
         $('#per_page').on('change', function() {
@@ -279,6 +282,83 @@
                 }
             });
         }
+
+        // Show success message
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        // Show error message for duplicate NIS/NISN
+        @if(session('error'))
+            @if(session('error_type') == 'nis')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'NIS Sudah Ada!',
+                    text: '{{ session('error') }}. Silakan gunakan NIS yang berbeda.',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Focus ke input NIS
+                        $('#createModal').modal('show');
+                        setTimeout(function() {
+                            $('input[name="nis"]').focus().select();
+                        }, 500);
+                    }
+                });
+            @elseif(session('error_type') == 'nisn')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'NISN Sudah Ada!',
+                    text: '{{ session('error') }}. Silakan gunakan NISN yang berbeda.',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Focus ke input NISN
+                        $('#createModal').modal('show');
+                        setTimeout(function() {
+                            $('input[name="nisn"]').focus().select();
+                        }, 500);
+                    }
+                });
+            @else
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan!',
+                    text: '{{ session('error') }}',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        @endif
+
+        // Show validation errors
+        @if($errors->any())
+            let errorMessages = '';
+            @foreach($errors->all() as $error)
+                errorMessages += '{{ $error }}\n';
+            @endforeach
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Data Tidak Valid!',
+                text: errorMessages,
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#createModal').modal('show');
+                }
+            });
+        @endif
+
+        // Keep modal open if there are old inputs (validation failed)
+        @if(old('nis') || old('nisn') || old('nama'))
+            $('#createModal').modal('show');
+        @endif
     });
 </script>
 @stop

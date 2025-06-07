@@ -110,7 +110,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => false,
+        'enabled' => true,
         'mode' => 'cwrapper', // 'fullscreen' or 'cwrapper'
         'img' => [
             'path' => '/logo/smkn6solo.svg',

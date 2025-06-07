@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Jurusan;
 use App\Models\Agama;
+use Illuminate\Validation\ValidationException;
 
 class SiswaController extends Controller
 {
@@ -74,44 +75,126 @@ class SiswaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nis' => 'required|unique:siswas|max:20',
-            'nisn' => 'required|unique:siswas|max:20',
-            'nama' => 'required|max:100',
-            'kelas' => 'required|in:X,XI,XII',
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'agama_id' => 'required|exists:agamas,id',
-            'alamat' => 'required',
-            'no_telepon' => 'required|max:20',
-            'jenis_kelamin' => 'required|in:l,p',
-            'tanggal_lahir' => 'required|date'
-        ]);
+        try {
+            // Cek apakah NIS sudah ada
+            if (Siswa::where('nis', $request->nis)->exists()) {
+                return redirect()->back()
+                    ->with('error', 'NIS sudah digunakan')
+                    ->with('error_type', 'nis')
+                    ->withInput();
+            }
 
-        Siswa::create($request->all());
+            // Cek apakah NISN sudah ada
+            if (Siswa::where('nisn', $request->nisn)->exists()) {
+                return redirect()->back()
+                    ->with('error', 'NISN sudah digunakan')
+                    ->with('error_type', 'nisn')
+                    ->withInput();
+            }
 
-        return redirect()->back()->with('success', 'Data siswa berhasil ditambahkan');
+            $request->validate([
+                'nis' => 'required|unique:siswas|max:20',
+                'nisn' => 'required|unique:siswas|max:20',
+                'nama' => 'required|max:100',
+                'kelas' => 'required|in:X,XI,XII',
+                'jurusan_id' => 'required|exists:jurusans,id',
+                'agama_id' => 'required|exists:agamas,id',
+                'alamat' => 'required',
+                'no_telepon' => 'required|max:20',
+                'jenis_kelamin' => 'required|in:l,p',
+                'tanggal_lahir' => 'required|date'
+            ]);
+
+            Siswa::create($request->all());
+
+            return redirect()->back()->with('success', 'Data siswa berhasil ditambahkan');
+
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            $errors = $e->validator->errors();
+            
+            if ($errors->has('nis')) {
+                return redirect()->back()
+                    ->with('error', 'NIS sudah digunakan')
+                    ->with('error_type', 'nis')
+                    ->withInput();
+            }
+            
+            if ($errors->has('nisn')) {
+                return redirect()->back()
+                    ->with('error', 'NISN sudah digunakan')
+                    ->with('error_type', 'nisn')
+                    ->withInput();
+            }
+            
+            // Other validation errors
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        }
     }
 
     public function update(Request $request, $id)
     {
         $siswa = Siswa::findOrFail($id);
         
-        $request->validate([
-            'nis' => 'required|unique:siswas,nis,'.$id.'|max:20',
-            'nisn' => 'required|unique:siswas,nisn,'.$id.'|max:20',
-            'nama' => 'required|max:100',
-            'kelas' => 'required|in:X,XI,XII',
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'agama_id' => 'required|exists:agamas,id',
-            'alamat' => 'required',
-            'no_telepon' => 'required|max:20',
-            'jenis_kelamin' => 'required|in:l,p',
-            'tanggal_lahir' => 'required|date'
-        ]);
+        try {
+            // Cek apakah NIS sudah ada (kecuali untuk siswa yang sedang diupdate)
+            if (Siswa::where('nis', $request->nis)->where('id', '!=', $id)->exists()) {
+                return redirect()->back()
+                    ->with('error', 'NIS sudah digunakan')
+                    ->with('error_type', 'nis')
+                    ->withInput();
+            }
 
-        $siswa->update($request->all());
+            // Cek apakah NISN sudah ada (kecuali untuk siswa yang sedang diupdate)
+            if (Siswa::where('nisn', $request->nisn)->where('id', '!=', $id)->exists()) {
+                return redirect()->back()
+                    ->with('error', 'NISN sudah digunakan')
+                    ->with('error_type', 'nisn')
+                    ->withInput();
+            }
+            
+            $request->validate([
+                'nis' => 'required|unique:siswas,nis,'.$id.'|max:20',
+                'nisn' => 'required|unique:siswas,nisn,'.$id.'|max:20',
+                'nama' => 'required|max:100',
+                'kelas' => 'required|in:X,XI,XII',
+                'jurusan_id' => 'required|exists:jurusans,id',
+                'agama_id' => 'required|exists:agamas,id',
+                'alamat' => 'required',
+                'no_telepon' => 'required|max:20',
+                'jenis_kelamin' => 'required|in:l,p',
+                'tanggal_lahir' => 'required|date'
+            ]);
 
-        return redirect()->back()->with('success', 'Data siswa berhasil diupdate');
+            $siswa->update($request->all());
+
+            return redirect()->back()->with('success', 'Data siswa berhasil diupdate');
+
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            $errors = $e->validator->errors();
+            
+            if ($errors->has('nis')) {
+                return redirect()->back()
+                    ->with('error', 'NIS sudah digunakan')
+                    ->with('error_type', 'nis')
+                    ->withInput();
+            }
+            
+            if ($errors->has('nisn')) {
+                return redirect()->back()
+                    ->with('error', 'NISN sudah digunakan')
+                    ->with('error_type', 'nisn')
+                    ->withInput();
+            }
+            
+            // Other validation errors
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        }
     }
 
     public function destroy($id)
