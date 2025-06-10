@@ -56,6 +56,8 @@ Dengan meningkatnya jumlah siswa dan kompleksitas data yang harus dikelola, sepe
 - 📱 **Responsive Design**: Dapat diakses dari berbagai perangkat (desktop, tablet, mobile)
 - ⚡ **Fast Loading**: Optimasi performa untuk loading yang cepat
 
+# 🌐 COBA WEBSITE : <a href="https://adminlte.rizafidev.site/register">KUNJUNGI</a>
+
 ## 🛠️ Tech Stack
 
 <div align="center">
